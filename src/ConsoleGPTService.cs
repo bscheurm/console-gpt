@@ -17,6 +17,7 @@ namespace ConsoleGPT
         private readonly IKernel _semanticKernel;
         private readonly IDictionary<string, ISKFunction> _speechSkill;
         private readonly IDictionary<string, ISKFunction> _chatSkill;
+        private readonly IDictionary<string, ISKFunction> _querySkill;
         private readonly IHostApplicationLifetime _lifeTime;
 
         // Uncomment this to create a function that converts text to a poem
@@ -25,6 +26,7 @@ namespace ConsoleGPT
         public ConsoleGPTService(IKernel semanticKernel,
                                  ISpeechSkill speechSkill,
                                  ChatSkill chatSkill,
+                                 QuerySkill querySkill,
                                 //  IOptions<OpenAiServiceOptions> openAIOptions,
                                  IHostApplicationLifetime lifeTime)
         {
@@ -34,6 +36,7 @@ namespace ConsoleGPT
             // Import the skills to load the semantic kernel functions
             _speechSkill = _semanticKernel.ImportSkill(speechSkill);
             _chatSkill = _semanticKernel.ImportSkill(chatSkill);
+            _querySkill = _semanticKernel.ImportSkill(querySkill);
 
             // Uncomment this to create a function that converts text to a poem
             // _semanticKernel.Config.AddOpenAITextCompletionService("text", openAIOptions.Value.TextModel, 
@@ -74,7 +77,7 @@ namespace ConsoleGPT
             while (!cancellationToken.IsCancellationRequested)
             {
                 // Create our pipeline
-                ISKFunction[] pipeline = {_speechSkill["Listen"], _chatSkill["Prompt"], _speechSkill["Respond"]};
+                ISKFunction[] pipeline = {_speechSkill["Listen"], _querySkill["Optimize"], _chatSkill["Prompt"], _speechSkill["Respond"]};
 
                 // Uncomment the following line to include the poem function in the pipeline
                 // pipeline = pipeline.Append(_poemFunction).Append(_speechSkill["Respond"]).ToArray();

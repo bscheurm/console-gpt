@@ -33,7 +33,7 @@ namespace ConsoleGPT.Skills
             // semanticKernel.Config.AddOpenAIChatCompletionService("chat", openAIOptions.Value.ChatModel, openAIOptions.Value.Key);
             semanticKernel.Config.AddAzureChatCompletionService(
                 "TnRDev-AOAI", 
-                openAIOptions.Value.ModelDeploymentId, 
+                openAIOptions.Value.ChatModelDeploymentId, 
                 openAIOptions.Value.AzureEndpoint, 
                 openAIOptions.Value.AzureKey);
 

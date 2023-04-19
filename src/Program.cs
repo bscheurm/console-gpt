@@ -42,6 +42,7 @@ builder.ConfigureServices((context, services) =>
     // services.AddSingleton<ISpeechSkill, AzCognitiveServicesSpeechSkill>();
 
     services.AddSingleton<ChatSkill>();
+    services.AddSingleton<QuerySkill>();
 
     // Add the primary hosted service to start the loop.
     services.AddHostedService<ConsoleGPTService>();

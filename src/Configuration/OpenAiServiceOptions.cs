@@ -50,7 +50,9 @@ namespace ConsoleGPT
         /// <summary>
         /// Id of the Azure OpenAI model deployment to use.
         /// </summary>
-        public string ModelDeploymentId { get; set; }
+        public string ChatModelDeploymentId { get; set; }
+
+        public string CompletionModelDeploymentId { get; set; }
 
         /// <summary>
         /// Name of the chat model to use (e.g. text-davinci-002).
