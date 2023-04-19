@@ -8,9 +8,19 @@ namespace ConsoleGPT
     public class OpenAiServiceOptions
     {
         /// <summary>
-        /// API Key.
+        /// The API Key to use if connecting to OpenAI.
         /// </summary>
         public string Key { get; set; }
+
+        /// <summary>
+        /// The API Key to use if connecting to Azure OpenAI.
+        /// </summary>
+        public string AzureKey { get; set; }
+
+        /// <summary>
+        /// Endpoint for the Azure OpenAI Service instance.
+        /// </summary>
+        public string AzureEndpoint { get; set; }
 
         /// <summary>
         /// Maximum number of tokens to use when calling OpenAI.
@@ -36,6 +46,11 @@ namespace ConsoleGPT
         /// How much to penalize new tokens based on whether they appear in the text so far (0.0 - 2.0).
         /// </summary>
         public float PresencePenalty { get; set; }
+
+        /// <summary>
+        /// Id of the Azure OpenAI model deployment to use.
+        /// </summary>
+        public string ModelDeploymentId { get; set; }
 
         /// <summary>
         /// Name of the chat model to use (e.g. text-davinci-002).
