@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-
+using console_gpt.Skills;
 using ConsoleGPT;
 using ConsoleGPT.Skills;
 
@@ -43,6 +43,7 @@ builder.ConfigureServices((context, services) =>
 
     services.AddSingleton<ChatSkill>();
     services.AddSingleton<QuerySkill>();
+    services.AddSingleton<SemanticSearchSkill>();
 
     // Add the primary hosted service to start the loop.
     services.AddHostedService<ConsoleGPTService>();

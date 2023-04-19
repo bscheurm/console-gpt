@@ -3,6 +3,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.AI;
 using Microsoft.SemanticKernel.AI.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI.ChatCompletion;
+using Microsoft.SemanticKernel.Orchestration;
 using Microsoft.SemanticKernel.SkillDefinition;
 
 namespace ConsoleGPT.Skills
@@ -32,7 +33,7 @@ namespace ConsoleGPT.Skills
             // Configure the semantic kernel
             // semanticKernel.Config.AddOpenAIChatCompletionService("chat", openAIOptions.Value.ChatModel, openAIOptions.Value.Key);
             semanticKernel.Config.AddAzureChatCompletionService(
-                "TnRDev-AOAI", 
+                "ChatSkillCompletion", 
                 openAIOptions.Value.ChatModelDeploymentId, 
                 openAIOptions.Value.AzureEndpoint, 
                 openAIOptions.Value.AzureKey);
@@ -48,14 +49,16 @@ namespace ConsoleGPT.Skills
         /// </summary>
         [SKFunction("Send a prompt to the LLM.")]
         [SKFunctionName("Prompt")]
-        public async Task<string> Prompt(string prompt)
+        public async Task<string> Prompt(string sourcesJson, SKContext skContext)
         {
+            string userInput = skContext.Variables["InitialInput"];
+
             var reply = string.Empty;
             try
             {
                 // Add the question as a user message to the chat history, then send everything to OpenAI.
                 // The chat history is used as context for the prompt
-                _chatHistory.AddUserMessage(prompt);
+                _chatHistory.AddUserMessage(userInput);
                 reply = await _chatCompletion.GenerateMessageAsync(_chatHistory, _chatRequestSettings);
 
                 // Add the interaction to the chat history.

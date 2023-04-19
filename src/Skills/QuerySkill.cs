@@ -21,7 +21,7 @@ namespace ConsoleGPT.Skills
 
             // Configure the semantic kernel
             _kernel.Config.AddAzureTextCompletionService(
-                "TnRDev-AOAI", 
+                "QuerySkillCompletion", 
                 openAIOptions.Value.CompletionModelDeploymentId, 
                 openAIOptions.Value.AzureEndpoint, 
                 openAIOptions.Value.AzureKey);
@@ -32,9 +32,11 @@ namespace ConsoleGPT.Skills
         /// </summary>
         [SKFunction("Optimize user text for search.")]
         [SKFunctionName("Optimize")]
-        public async Task<string> Optimize(string prompt)
+        public async Task<string> Optimize(string prompt, SKContext skContext)
         {
-            var reply = string.Empty;
+            skContext.Variables.Set("InitialInput", prompt);
+
+            var optimizedQuery = string.Empty;
             try
             {
                 var skillsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Skills");
@@ -47,15 +49,17 @@ namespace ConsoleGPT.Skills
 
                 Console.WriteLine($"Input: {prompt}, Optimized: {result}");
 
-                reply = result.Result;
+                optimizedQuery = result.Result;
             }
             catch (AIException aiex)
             {
                 // Reply with the error message if there is one
-                reply = $"OpenAI returned an error ({aiex.Message}). Please try again.";
+                optimizedQuery = $"OpenAI returned an error ({aiex.Message}). Please try again.";
             }
 
-            return reply;
+            skContext.Variables.Set("OptimizedText", optimizedQuery);
+
+            return optimizedQuery;
         }
     }
 }

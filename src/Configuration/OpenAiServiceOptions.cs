@@ -17,6 +17,8 @@ namespace ConsoleGPT
         /// </summary>
         public string AzureKey { get; set; }
 
+        public string SearchApiKey { get; set; }
+
         /// <summary>
         /// Endpoint for the Azure OpenAI Service instance.
         /// </summary>

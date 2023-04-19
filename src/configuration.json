@@ -11,6 +11,7 @@
     "Key": "", // dotnet user-secrets set "OpenAI:Key" "****"
     "AzureKey": "",
     "AzureEndpoint": "",
+    "SearchApiKey":  "",
     "MaxTokens": 1500,
     "Temperature": 0.7, // 0.0 - 1.0
     "FrequencyPenalty": 0, // 0.0 - 2.0

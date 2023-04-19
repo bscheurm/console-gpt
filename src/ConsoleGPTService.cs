@@ -1,3 +1,4 @@
+using console_gpt.Skills;
 using ConsoleGPT.Skills;
 
 using Microsoft.Extensions.Hosting;
@@ -18,6 +19,7 @@ namespace ConsoleGPT
         private readonly IDictionary<string, ISKFunction> _speechSkill;
         private readonly IDictionary<string, ISKFunction> _chatSkill;
         private readonly IDictionary<string, ISKFunction> _querySkill;
+        private readonly IDictionary<string, ISKFunction> _searchSkill;
         private readonly IHostApplicationLifetime _lifeTime;
 
         // Uncomment this to create a function that converts text to a poem
@@ -27,6 +29,7 @@ namespace ConsoleGPT
                                  ISpeechSkill speechSkill,
                                  ChatSkill chatSkill,
                                  QuerySkill querySkill,
+                                 SemanticSearchSkill semanticSearchSkill,
                                 //  IOptions<OpenAiServiceOptions> openAIOptions,
                                  IHostApplicationLifetime lifeTime)
         {
@@ -37,6 +40,7 @@ namespace ConsoleGPT
             _speechSkill = _semanticKernel.ImportSkill(speechSkill);
             _chatSkill = _semanticKernel.ImportSkill(chatSkill);
             _querySkill = _semanticKernel.ImportSkill(querySkill);
+            _searchSkill = _semanticKernel.ImportSkill(semanticSearchSkill);
 
             // Uncomment this to create a function that converts text to a poem
             // _semanticKernel.Config.AddOpenAITextCompletionService("text", openAIOptions.Value.TextModel, 
@@ -77,7 +81,14 @@ namespace ConsoleGPT
             while (!cancellationToken.IsCancellationRequested)
             {
                 // Create our pipeline
-                ISKFunction[] pipeline = {_speechSkill["Listen"], _querySkill["Optimize"], _chatSkill["Prompt"], _speechSkill["Respond"]};
+                ISKFunction[] pipeline =
+                {
+                    _speechSkill["Listen"],
+                    _querySkill["Optimize"],
+                    _searchSkill["RunSearch"],
+                    _chatSkill["Prompt"],
+                    _speechSkill["Respond"]
+                };
 
                 // Uncomment the following line to include the poem function in the pipeline
                 // pipeline = pipeline.Append(_poemFunction).Append(_speechSkill["Respond"]).ToArray();
